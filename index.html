@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOBYARA — Beyond The Limit</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* ─── TOKENS ─── */
+:root{--o:#FF6B00;--om:#FF8C2A;--ol:#FF9A3C;--glow:rgba(255,107,0,.3);--soft:rgba(255,107,0,.10);}
+[data-theme="dark"]{
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#161616;
+  --surface:#181818;--text:#f0ece4;--muted:#88887f;
+  --border:#242424;--bglow:rgba(255,107,0,.4);
+  --nav:rgba(8,8,8,.9);--card:#111;--inp:#1c1c1c;
+}
+[data-theme="light"]{
+  --bg:#f5f2ee;--bg2:#edeae5;--bg3:#e4e0d9;
+  --surface:#fff;--text:#111;--muted:#77776e;
+  --border:#dedad2;--bglow:rgba(255,107,0,.5);
+  --nav:rgba(245,242,238,.93);--card:#faf7f3;--inp:#eeeae4;
+}
+
+/* ─── RESET ─── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .4s,color .4s;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 46px;
+  background:var(--nav);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all .4s;
+}
+.n-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.n-box img{
+  width:120px;height:60px;
+}
+.n-name{
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:16px;letter-spacing:.12em;
+  background:linear-gradient(90deg,#FF6B00,#FF9A3C);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.n-links{display:flex;gap:26px;list-style:none;}
+.n-links a{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:color .2s;}
+.n-links a:hover{color:var(--o);}
+.n-right{display:flex;align-items:center;gap:12px;}
+
+.t-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 60px;
+  height: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  padding: 0 6px;
+  cursor: pointer;
+  transition: border-color .25s, background .3s;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.t-btn:hover { border-color: var(--o); }
+
+/* Sliding pill */
+.t-pill {
+  position: absolute;
+  top: 2px;
+  left: 2px;          /* dark side start */
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: left 0.3s;
+  z-index: 1;
+}
+
+/* Icons */
+.t-btn i {
+  position: relative;
+  z-index: 2;
+  font-size: 18px;
+  transition: opacity 0.3s;
+}
+
+.t-btn i.fa-moon-o { color: #34495e; opacity:1; }
+.t-btn i.fa-sun-o  { color: #f1c40f; opacity:0.4; }
+
+/* Dark mode */
+[data-theme="dark"] .t-pill { left: 2px; }
+[data-theme="dark"] .t-btn i.fa-moon-o { opacity: 1; }
+[data-theme="dark"] .t-btn i.fa-sun-o  { opacity: 0.4; }
+
+/* Light mode */
+[data-theme="light"] .t-pill { left: 30px; } /* perfectly aligned */
+[data-theme="light"] .t-btn i.fa-moon-o { opacity: 0.4; }
+[data-theme="light"] .t-btn i.fa-sun-o  { opacity: 1; }
+
+.n-visit{background:linear-gradient(90deg,#FF6B00,#FF9A3C);color:#fff;border:none;cursor:pointer;padding:9px 20px;font-family:'Exo 2',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:4px;box-shadow:0 0 14px var(--glow);transition:opacity .2s,transform .2s;}
+.n-visit:hover{opacity:.85;transform:translateY(-1px);}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hbg span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s;}
+.hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hbg.open span:nth-child(2){opacity:0;}
+.hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mob-menu{display:none;position:fixed;top:61px;left:0;right:0;z-index:499;background:var(--nav);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:20px 24px;flex-direction:column;gap:14px;}
+.mob-menu.open{display:flex;}
+.mob-menu a{font-size:14px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--border);}
+.mob-menu a:hover{color:var(--o);}
+
+/* ─── HERO ─── */
+#home{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  padding-top:61px;
+  position:relative;overflow:hidden;
+}
+#home::before{
+  content:'';position:absolute;top:-300px;right:-300px;
+  width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,107,0,.11),transparent 68%);
+  pointer-events:none;
+}
+.h-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 48px 80px 80px;position:relative;z-index:1;
+}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--o);margin-bottom:22px;animation:fadeUp .8s ease both;}
+.e-bar{width:28px;height:2px;background:linear-gradient(90deg,#FF6B00,#FF9A3C);}
+.h-left h1{font-family:'Orbitron',sans-serif;font-size:clamp(30px,4vw,62px);font-weight:900;line-height:1.06;letter-spacing:.02em;margin-bottom:10px;animation:fadeUp .8s .05s ease both;}
+.grad{background:linear-gradient(90deg,#FF6B00,#FF9A3C,#FFB060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.h-tag{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:26px;animation:fadeUp .8s .1s ease both;}
+.h-desc{font-size:15px;line-height:1.82;color:var(--muted);max-width:400px;margin-bottom:46px;font-weight:300;animation:fadeUp .8s .15s ease both;}
+.h-desc strong{color:var(--o);font-weight:600;}
+.h-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px;animation:fadeUp .8s .2s ease both;}
+.btn-f{background:linear-gradient(90deg,#FF6B00,#FF9A3C);color:#fff;border:none;cursor:pointer;padding:14px 32px;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:4px;box-shadow:0 4px 22px var(--glow);transition:all .25s;}
+.btn-f:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,107,0,.45);}
+.btn-g{background:transparent;color:var(--text);border:1px solid var(--bglow);cursor:pointer;padding:14px 32px;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:4px;transition:all .25s;}
+.btn-g:hover{border-color:var(--o);color:var(--o);transform:translateY(-2px);}
+.h-stats{display:flex;gap:32px;animation:fadeUp .8s .25s ease both;flex-wrap:wrap;}
+.sn{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:var(--o);line-height:1;margin-bottom:4px;}
+.sl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.sdiv{width:1px;background:var(--border);}
+
+/* ── Hero right: Samsung panel ── */
+.h-right{
+  background:var(--bg2);
+  display:flex;align-items:stretch;
+  position:relative;overflow:hidden;
+}
+.samsung-panel{
+  width:100%;
+  display:flex;flex-direction:column;
+  position:relative;z-index:1;
+}
+/* TOP bar */
+.sp-top{
+  padding:38px 32px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sp-launch{
+  font-family:'Orbitron',sans-serif;font-size:15px;font-weight:600;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--o);
+  display:flex;align-items:center;gap:8px;
+}
+.sp-blink{width:6px;height:6px;border-radius:50%;background:var(--o);animation:blink 1.4s ease-in-out infinite;}
+.sp-year{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.12em;}
+
+/* CENTER image zone — fills remaining space */
+.sp-img-zone{
+  flex:1;
+  position:relative;
+  background:var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  min-height:320px;
+}
+.sp-img-zone::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 60%,rgba(255,107,0,.14),transparent 65%);
+  pointer-events:none;z-index:1;
+}
+/* THE IMAGE — add src to show your Samsung S26 Ultra photo */
+.sp-product-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  position:relative;z-index:2;
+  transition:transform .6s cubic-bezier(.25,.46,.45,.94);
+}
+.sp-product-img:hover{transform:scale(1.03);}
+/* placeholder shown when no src is set */
+.sp-img-placeholder{
+  position:absolute;inset:0;z-index:3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;pointer-events:none;
+}
+.sp-img-placeholder.hidden{display:none;}
+.sp-ph-ring{
+  width:72px;height:72px;border:2px dashed rgba(255,107,0,.45);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:var(--o);font-size:24px;
+  animation:pulse 2.2s ease-in-out infinite;
+}
+.sp-ph-text{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.55;text-align:center;line-height:1.6;}
+
+/* BOTTOM bar */
+.sp-bottom{
+  padding:16px 32px 22px;
+  border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.sp-name-row{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.sp-avail{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.sp-model{font-family:'Orbitron',sans-serif;font-size:clamp(16px,1.8vw,22px);font-weight:900;letter-spacing:.06em;}
+.sp-model span{background:linear-gradient(90deg,#FF6B00,#FFB060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sp-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.sp-chip{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:5px 11px;border-radius:3px;background:var(--soft);border:1px solid var(--bglow);color:var(--o);}
+
+/* ─── MARQUEE ─── */
+.mq-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);}
+.mq-track{display:flex;animation:marquee 28s linear infinite;width:max-content;}
+.mi{display:inline-flex;align-items:center;gap:14px;padding:15px 32px;font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.md{color:var(--o);}
+
+/* ─── QUOTES ─── */
+.quotes-wrap{padding:100px 80px;}
+.q-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px 24px;position:relative;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s;}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#FF6B00,#FF9A3C);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.q-card:hover{transform:translateY(-5px);border-color:var(--bglow);box-shadow:0 12px 40px var(--soft);}
+.q-card:hover::before{transform:scaleX(1);}
+.qi{font-size:26px;margin-bottom:14px;}
+.qt{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:600;line-height:1.55;color:var(--text);margin-bottom:10px;}
+.qs{font-size:13px;color:var(--muted);line-height:1.65;}
+
+/* ─── SHOWCASE SECTIONS ─── */
+/* Full-viewport split: image left/right, text other side */
+.showcase{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(40px);
+  transition:opacity .85s ease,transform .85s ease;
+}
+.showcase.revealed{opacity:1;transform:none;}
+
+/* alternating bg */
+.showcase:nth-child(odd)  .sc-stage{background:var(--bg2);}
+.showcase:nth-child(even) .sc-stage{background:var(--bg3);}
+.showcase:nth-child(odd)  .sc-info{background:var(--bg);}
+.showcase:nth-child(even) .sc-info{background:var(--bg2);}
+
+/* flip every other */
+.showcase.flip .sc-stage{order:-1;}
+
+/* Info pane */
+.sc-info{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 64px;position:relative;z-index:1;overflow:hidden;
+}
+.sc-ghost-num{
+  font-family:'Orbitron',sans-serif;font-size:120px;font-weight:900;
+  line-height:1;color:transparent;
+  -webkit-text-stroke:1px rgba(255,107,0,.1);
+  position:absolute;bottom:-20px;right:-10px;pointer-events:none;
+  transition:color .4s;
+}
+.showcase:hover .sc-ghost-num{-webkit-text-stroke-color:rgba(255,107,0,.16);}
+.sc-cat{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--o);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sc-cat::before{content:'//';opacity:.4;}
+.sc-name{font-family:'Orbitron',sans-serif;font-size:clamp(26px,3.2vw,50px);font-weight:900;line-height:1.08;letter-spacing:.01em;margin-bottom:20px;}
+.sc-sub{font-size:15px;line-height:1.8;color:var(--muted);max-width:380px;margin-bottom:36px;font-weight:300;}
+.sc-sub strong{color:var(--o);font-weight:600;}
+.sc-tags{display:flex;flex-wrap:wrap;gap:10px;}
+.sc-tag{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:4px;background:var(--soft);border:1px solid var(--bglow);color:var(--o);transition:background .2s,transform .2s;}
+.sc-tag:hover{background:rgba(255,107,0,.18);transform:translateY(-1px);}
+
+/* Stage / image pane */
+.sc-stage{
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  cursor:default;min-height:480px;
+}
+.sc-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,107,0,.05));z-index:1;pointer-events:none;}
+
+/* Glow orb */
+.sc-orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,0,.16),transparent 68%);pointer-events:none;z-index:0;}
+
+/* THE product image */
+.sc-product-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  position:relative;z-index:2;
+  transition:transform .7s cubic-bezier(.25,.46,.45,.94);
+}
+.showcase:hover .sc-product-img{transform:scale(1.04);}
+
+/* Shine sweep */
+.sc-stage::after{
+  content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.05) 50%,transparent 60%);
+  transition:left .75s ease;pointer-events:none;z-index:5;
+}
+.showcase:hover .sc-stage::after{left:150%;}
+
+/* Placeholder when no image set */
+.sc-placeholder{
+  position:absolute;inset:0;z-index:3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;
+}
+.sc-placeholder.hidden{display:none;}
+.sc-ph-ring{width:80px;height:80px;border:2px dashed rgba(255,107,0,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--o);font-size:28px;animation:pulse 2.2s ease-in-out infinite;}
+.sc-ph-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.5;text-align:center;}
+
+/* ─── WHY US ─── */
+.why-wrap{padding:100px 80px;background:var(--bg2);}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.why-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px 20px;text-align:center;transition:border-color .3s,transform .3s;}
+.why-card:hover{border-color:var(--bglow);transform:translateY(-3px);}
+.wi{font-size:32px;margin-bottom:14px;display:block;}
+.wt{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--text);margin-bottom:8px;}
+.wd{font-size:13px;color:var(--muted);line-height:1.65;}
+
+/* ─── PROMO ─── */
+.promo-wrap{padding:0 80px 80px; margin-top:40px;}
+.promo{border-radius:12px;background:var(--bg2);border:1px solid var(--border);padding:72px 80px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px;position:relative;overflow:hidden;}
+.promo::before{content:'';position:absolute;right:-80px;top:-80px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,0,.14),transparent 68%);}
+.promo::after{content:'';position:absolute;left:0;bottom:0;width:100%;height:2px;background:linear-gradient(90deg,#FF6B00,#FF9A3C,transparent);}
+.promo .sec-label{margin-bottom:14px;}
+.promo h2{font-family:'Orbitron',sans-serif;font-size:clamp(22px,2.8vw,38px);font-weight:700;line-height:1.14;margin-bottom:14px;}
+.promo h2 span{background:linear-gradient(90deg,#FF6B00,#FF9A3C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.promo p{font-size:15px;color:var(--muted);line-height:1.7;max-width:450px;}
+.p-actions{display:flex;flex-direction:column;gap:10px;align-items:center;position:relative;z-index:1;}
+.p-btn{background:linear-gradient(90deg,#FF6B00,#FF9A3C);color:#fff;border:none;cursor:pointer;padding:15px 36px;font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:4px;white-space:nowrap;box-shadow:0 4px 22px var(--glow);transition:all .25s;}
+.p-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,107,0,.45);}
+.p-note{font-size:11px;color:var(--muted);letter-spacing:.06em;text-align:center;}
+
+/* ─── ABOUT ─── */
+#about{padding:100px 80px;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.about-text p{font-size:15px;line-height:1.88;color:var(--muted);margin-bottom:18px;font-weight:300;}
+.about-text p strong{color:var(--o);font-weight:600;}
+.about-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+.a-tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:4px;background:var(--soft);border:1px solid var(--bglow);color:var(--o);}
+
+/* Single store card — big, clickable, map-style */
+.store-main-card{
+  display:block;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;
+  text-decoration:none;color:var(--text);
+  transition:border-color .3s,box-shadow .3s,transform .3s;
+}
+.store-main-card:hover{border-color:var(--bglow);box-shadow:0 8px 40px var(--soft);transform:translateY(-3px);}
+
+/* Map iframe wrapper */
+.map-frame-wrap{
+  width:100%;height:240px;
+  background:var(--bg3);
+  position:relative;overflow:hidden;
+}
+.map-frame-wrap iframe{
+  width:100%;height:100%;border:none;
+  filter:grayscale(30%) contrast(1.05);
+  transition:filter .3s;
+}
+.store-main-card:hover .map-frame-wrap iframe{filter:grayscale(0%) contrast(1.1);}
+
+/* Map overlay — click to open */
+.map-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.0);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .3s;
+  cursor:pointer;
+}
+.store-main-card:hover .map-overlay{background:rgba(0,0,0,.08);}
+.map-overlay-btn{
+  background:linear-gradient(90deg,#FF6B00,#FF9A3C);
+  color:#fff;
+  padding:10px 22px;border-radius:4px;
+  font-family:'Exo 2',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  box-shadow:0 4px 16px var(--glow);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .3s,transform .3s;
+  pointer-events:none;
+}
+.store-main-card:hover .map-overlay-btn{opacity:1;transform:translateY(0);}
+
+.store-body{padding:24px 28px;}
+.store-body-top{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.store-badge{
+  width:42px;height:42px;min-width:42px;
+  background:linear-gradient(135deg,#FF6B00,#FF9A3C);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.store-badge-info .store-name{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;margin-bottom:2px;}
+.store-badge-info .store-sub{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--o);}
+.store-details{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sd-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--muted);}
+.sd-item i{color:var(--o);margin-top:2px;width:14px;flex-shrink:0;}
+.store-cta{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:18px;padding:12px;border-radius:6px;
+  background:var(--soft);border:1px solid var(--bglow);
+  font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--o);
+  transition:background .2s;
+}
+.store-cta:hover{background:rgba(255,107,0,.18);}
+
+/* ─── CONNECT ─── */
+#connect{padding:100px 80px;background:var(--bg2);}
+.connect-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.ci-info p{font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:22px;font-weight:300;}
+.ci-details{display:flex;flex-direction:column;gap:13px;}
+.cd{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);}
+.cd i{color:var(--o);width:16px;text-align:center;}
+.c-form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:36px 32px;}
+.c-form h3{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;margin-bottom:26px;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.f-group{display:flex;flex-direction:column;gap:7px;margin-bottom:15px;}
+.f-group label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.f-group input{background:var(--inp);border:1px solid var(--border);border-radius:5px;padding:12px 14px;font-family:'Exo 2',sans-serif;font-size:14px;color:var(--text);transition:border-color .2s,box-shadow .2s;outline:none;}
+.f-group input:focus{border-color:var(--o);box-shadow:0 0 0 3px var(--soft);}
+.f-group input::placeholder{color:var(--muted);opacity:.5;}
+.f-submit{width:100%;background:linear-gradient(90deg,#FF6B00,#FF9A3C);color:#fff;border:none;cursor:pointer;padding:14px;font-family:'Exo 2',sans-serif;font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;box-shadow:0 4px 20px var(--glow);transition:all .25s;margin-top:8px;}
+.f-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,107,0,.45);}
+.f-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.f-msg{margin-top:14px;font-size:13px;text-align:center;padding:10px;border-radius:5px;display:none;}
+.f-msg.ok{display:block;color:#4caf7d;background:rgba(76,175,125,.1);border:1px solid rgba(76,175,125,.3);}
+.f-msg.err{display:block;color:#e05252;background:rgba(224,82,82,.1);border:1px solid rgba(224,82,82,.3);}
+
+/* ─── FOOTER ─── */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 80px 36px;}
+.f-top{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:48px;margin-bottom:48px;}
+.f-brand-row{display:flex;align-items:center;gap:11px;margin-bottom:14px;}
+.f-logo-box{width:36px;height:36px;background:linear-gradient(135deg,#FF6B00,#FF9A3C);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:16px;color:#fff;}
+.f-logo-name{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:700;background:linear-gradient(90deg,#FF6B00,#FF9A3C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.f-btl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.f-desc{font-size:13px;color:var(--muted);line-height:1.8;max-width:240px;}
+.f-col h4{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:18px;}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.f-col ul a{font-size:13px;color:var(--muted);transition:color .2s;}
+.f-col ul a:hover{color:var(--o);}
+.f-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.f-bottom p{font-size:12px;color:var(--muted);}
+.f-sig{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;background:linear-gradient(90deg,#FF6B00,#FF9A3C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* ─── SHARED UTILS ─── */
+.sec-label{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--o);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.sec-label::before{content:'//';opacity:.42;}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:clamp(20px,2.8vw,38px);font-weight:700;line-height:1.18;margin-bottom:52px;}
+
+#whatsappBtn {
+  position: fixed;
+  bottom: -100px; /* Start offscreen */
+  right: 30px;
+  background-color: #25D366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transition: transform 0.2s, box-shadow 0.2s, bottom 0.6s ease-out;
+}
+
+/* Hover effect stays */
+#whatsappBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+/* Add a class for the slide-up animation */
+#whatsappBtn.show {
+  bottom: 30px;
+}
+
+/* ─── KEYFRAMES ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-18px);}to{opacity:1;transform:translateX(0);}}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--glow);}50%{box-shadow:0 0 0 12px transparent;}}
+
+/* Product image animations — each category unique */
+/* Mobiles: float vertically */
+#mobiles .sc-product-img{animation:imgFloat 4s ease-in-out infinite;}
+/* Cases: gentle tilt rock */
+#cases .sc-product-img{animation:imgRock 5s ease-in-out infinite;}
+/* Accessories: pulse scale */
+#accessories .sc-product-img{animation:imgPulse 3.5s ease-in-out infinite;}
+/* Earphones: side drift */
+#earphones .sc-product-img{animation:imgDrift 4.5s ease-in-out infinite;}
+
+@keyframes imgFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-14px) scale(1.01);}}
+@keyframes imgRock{0%,100%{transform:rotate(0deg) scale(1);}33%{transform:rotate(1.5deg) scale(1.01);}66%{transform:rotate(-1.5deg) scale(1.01);}}
+@keyframes imgPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+@keyframes imgDrift{0%,100%{transform:translateX(0) rotate(0deg);}50%{transform:translateX(10px) rotate(1deg);}}
+
+/* Override hover scale when animated */
+.showcase:hover .sc-product-img{animation-play-state:paused;transform:scale(1.06)!important;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .q-grid{grid-template-columns:1fr 1fr;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .f-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:900px){
+  nav{padding:13px 20px;}
+  .n-links,.n-visit{display:none;}
+  .hbg{display:flex;}
+  #home{grid-template-columns:1fr;min-height:auto;}
+  .h-right{min-height:400px;}
+  .h-left{padding:48px 24px;}
+  .showcase{grid-template-columns:1fr;min-height:auto;}
+  .showcase.flip .sc-stage{order:-1;}
+  .sc-stage{min-height:320px;}
+  .sc-info{padding:48px 24px;}
+  .sc-ghost-num{font-size:72px;}
+  .quotes-wrap,.why-wrap,.promo-wrap{padding-left:24px;padding-right:24px;}
+  .promo-wrap{padding-bottom:64px;}
+  .promo{padding:44px 28px;grid-template-columns:1fr;}
+  #about,#connect{padding:64px 24px;}
+  .about-grid,.connect-grid{grid-template-columns:1fr;}
+  footer{padding:48px 24px 28px;}
+  .f-top{grid-template-columns:1fr 1fr;}
+  .sp-top{padding:16px 20px 12px;}
+  .sp-bottom{padding:12px 20px 16px;}
+  .store-details{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .q-grid{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .f-row{grid-template-columns:1fr;}
+  .f-top{grid-template-columns:1fr;}
+  .h-stats{gap:20px;}
+  .h-btns{flex-direction:column;}
+  .btn-f,.btn-g{text-align:center;}
+  .f-bottom{flex-direction:column;text-align:center;}
+  .promo-wrap{padding-left:16px;padding-right:16px;}
+}
+@media(max-width:400px){
+  .why-grid{grid-template-columns:1fr;}
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav>
+  <div class="n-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <div class="n-box"> <img src="mobyara.png" alt="logo"></div>
+  </div>
+  <ul class="n-links">
+    <li><a href="#mobiles">Mobiles</a></li>
+    <li><a href="#cases">Cases</a></li>
+    <li><a href="#accessories">Accessories</a></li>
+    <li><a href="#earphones">Earphones</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <div class="n-right">
+    <button class="t-btn" id="themeToggle" aria-label="Toggle theme">
+    <i class="fa fa-moon-o"></i>
+    <div class="t-pill"></div>
+    <i class="fa fa-sun-o"></i>
+  </button>
+
+    <button class="n-visit" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Visit Us</button>
+    <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mob-menu" id="mobMenu">
+  <a href="#mobiles">Mobiles</a>
+  <a href="#cases">Cases</a>
+  <a href="#accessories">Accessories</a>
+  <a href="#earphones">Earphones</a>
+  <a href="#about">About</a>
+  <a href="#connect">Connect</a>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="home">
+  <!-- Left: brand intro -->
+  <div class="h-left">
+    <span class="eyebrow"><span class="e-bar"></span>Retail Electronics Store</span>
+    <h1><span class="grad">BEYOND</span><br>THE LIMIT<br>OF SOUND</h1>
+    <p class="h-tag">// Mobyara — Beyond The Limit</p>
+    <p class="h-desc">Your neighbourhood's go-to destination for <strong>premium earphones</strong>, <strong>phone cases</strong>, <strong>mobiles</strong> and <strong>all electronics</strong>. Real products. Real prices.</p>
+    <div class="h-btns">
+      <button class="btn-f" onclick="document.getElementById('mobiles').scrollIntoView({behavior:'smooth'})">Explore Products</button>
+      <button class="btn-g" onclick="document.getElementById('connect').scrollIntoView({behavior:'smooth'})">Visit Our Store</button>
+    </div>
+    <div class="h-stats">
+      <div><div class="sn">500+</div><div class="sl">Products</div></div>
+      <div class="sdiv"></div>
+      <div><div class="sn">5K+</div><div class="sl">Customers</div></div>
+      <div class="sdiv"></div>
+      <div><div class="sn">4</div><div class="sl">Locations</div></div>
+    </div>
+  </div>
+
+  <!-- Right: Samsung S26 Ultra panel — TOP / IMAGE / BOTTOM -->
+  <div class="h-right">
+    <div class="samsung-panel">
+
+      <!-- TOP -->
+      <div class="sp-top">
+        <div class="sp-launch">
+          <span class="sp-blink"></span>
+          New Launch 2026
+        </div>
+        <div class="sp-year">Samsung</div>
+      </div>
+
+      <!-- CENTER — image fills this area -->
+      <div class="sp-img-zone">
+        <!--
+          ADD YOUR SAMSUNG S26 ULTRA IMAGE HERE:
+          Replace the src attribute with your image path or URL.
+          Example: src="images/samsung-s26-ultra.jpg"
+          The image will cover the entire panel automatically.
+        -->
+        <img
+          class="sp-product-img"
+          src="samsung_banner.png"
+          alt="Samsung Galaxy S26 Ultra"
+          id="heroProductImg"
+        />
+
+        <!-- Placeholder shown when src is empty — remove once image is added -->
+        <div class="sp-img-placeholder" id="heroPlaceholder">
+          <div class="sp-ph-ring"><i class="fa fa-image"></i></div>
+          <div class="sp-ph-text">Add Samsung S26 Ultra<br>image here<br><span style="font-size:10px;opacity:.6;">Recommended: 800×900px</span></div>
+        </div>
+      </div>
+
+      <!-- BOTTOM -->
+      <div class="sp-bottom">
+        <div class="sp-name-row">
+          <span class="sp-avail">Now Available at Mobyara</span>
+        </div>
+        <div class="sp-model">GALAXY <span>S26 ULTRA</span></div>
+        <div style="height:12px;"></div>
+        <div class="sp-chips">
+          <span class="sp-chip">200MP Camera</span>
+          <span class="sp-chip">S-Pen</span>
+          <span class="sp-chip">AI Powered</span>
+          <span class="sp-chip">6000mAh</span>
+          <span class="sp-chip">Titanium Frame</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <span class="mi"><span class="md">✦</span>Smartphones & Mobiles</span>
+    <span class="mi"><span class="md">✦</span>Phone Cases & Covers</span>
+    <span class="mi"><span class="md">✦</span>Charging Accessories</span>
+    <span class="mi"><span class="md">✦</span>Premium Earphones</span>
+    <span class="mi"><span class="md">✦</span>Bluetooth Speakers</span>
+    <span class="mi"><span class="md">✦</span>Screen Protectors</span>
+    <span class="mi"><span class="md">✦</span>Power Banks</span>
+    <span class="mi"><span class="md">✦</span>Samsung S26 Ultra In Stock</span>
+    <span class="mi"><span class="md">✦</span>Beyond The Limit</span>
+    <!-- duplicate for seamless loop -->
+    <span class="mi"><span class="md">✦</span>Smartphones & Mobiles</span>
+    <span class="mi"><span class="md">✦</span>Phone Cases & Covers</span>
+    <span class="mi"><span class="md">✦</span>Charging Accessories</span>
+    <span class="mi"><span class="md">✦</span>Premium Earphones</span>
+    <span class="mi"><span class="md">✦</span>Bluetooth Speakers</span>
+    <span class="mi"><span class="md">✦</span>Screen Protectors</span>
+    <span class="mi"><span class="md">✦</span>Power Banks</span>
+    <span class="mi"><span class="md">✦</span>Samsung S26 Ultra In Stock</span>
+    <span class="mi"><span class="md">✦</span>Beyond The Limit</span>
+  </div>
+</div>
+
+<!-- ══════════ QUOTES ══════════ -->
+<div class="quotes-wrap" style="background:var(--bg);">
+  <p class="sec-label">Our Promise</p>
+  <h2 class="sec-title">Why Mobyara Hits Different</h2>
+  <div class="q-grid">
+    <div class="q-card">
+      <div class="qi">
+        <i class="fa-solid fa-mobile-button" style="color:#007bff; font-size:28px;"></i>
+      </div>
+      <div class="qt">"The Latest Mobiles. Right Here, Right Now."</div>
+      <div class="qs">Samsung, Realme, OnePlus and more — newest smartphones at great prices, no delivery wait, no online hassle.</div>
+    </div>
+    <div class="q-card">
+      <div class="qi">
+        <i class="fa-solid fa-shield" style="color:#28a745; font-size:28px;"></i>
+      </div>
+      <div class="qt">"Your Phone Deserves a Case as Bold as You"</div>
+      <div class="qs">Hundreds of covers, skins and cases for every model and every style. Protect it. Own it. Show it off.</div>
+    </div>
+    <div class="q-card">
+      <div class="qi">
+        <i class="fa-solid fa-bolt-lightning" style="color:#ffc107; font-size:28px;"></i>
+      </div>
+      <div class="qt">"Charge Fast. Stay Connected. Go Beyond."</div>
+      <div class="qs">From fast chargers to multi-port hubs — we keep you powered when it matters most.</div>
+    </div>
+    <div class="q-card">
+      <div class="qi">
+        <i class="fa-solid fa-headphones-simple" style="color:#17a2b8; font-size:28px;"></i>
+      </div>
+      <div class="qt">"Sound That Moves You, Gear That Stays"</div>
+      <div class="qs">From deep bass earphones to noise-cancelling buds — we stock what your ears deserve.</div>
+    </div>
+    <div class="q-card">
+      <div class="qi">
+        <i class="fa-solid fa-trophy" style="color:#dc3545; font-size:28px;"></i>
+      </div>
+      <div class="qt">"Real Products. Real Prices. No Fake Deals."</div>
+      <div class="qs">Walk into Mobyara and walk out with 100% genuine electronics. Authenticity guaranteed, every time.</div>
+    </div>
+    <div class="q-card">
+      <div class="qi">
+        <i class="fa-solid fa-star" style="color:#6f42c1; font-size:28px;"></i>
+      </div>
+      <div class="qt">"Your Neighbourhood's Tech Powerhouse"</div>
+      <div class="qs">No delivery wait. No online stress. Come in, try it, take it home today. That's Mobyara.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SHOWCASE 01: MOBILES ══════════ -->
+<section class="showcase" id="mobiles">
+  <!-- Info pane -->
+  <div class="sc-info">
+    <span class="sc-ghost-num" style="padding-right: 20px; padding-bottom: 10px;">01</span>
+    <div class="sc-cat">Category 01</div>
+    <h2 class="sc-name">Smartphones<br>&amp; Mobiles</h2>
+    <p class="sc-sub">The <strong>Samsung Galaxy S26 Ultra</strong> is here — and so is the full lineup of OnePlus, Realme, Redmi and more. Walk in and walk out with the phone you've always wanted.</p>
+    <div class="sc-tags">
+      <span class="sc-tag">Samsung</span>
+      <span class="sc-tag">OnePlus</span>
+      <span class="sc-tag">Realme</span>
+      <span class="sc-tag">Redmi</span>
+      <span class="sc-tag">5G Ready</span>
+    </div>
+  </div>
+  <!-- Stage: image -->
+  <div class="sc-stage">
+    <div class="sc-orb"></div>
+    <!--
+      ADD YOUR MOBILES SHOWCASE IMAGE HERE:
+      src="your-image-path.jpg"
+      The image will fill the panel and animate with a float effect.
+    -->
+    <img
+      class="sc-product-img"
+      src="iphone.png"
+      alt="Smartphones & Mobiles at Mobyara"
+      id="mobilesImg"
+    />
+    <!-- Placeholder — remove once image added -->
+    <div class="sc-placeholder" id="mobilesPh">
+      <div class="sc-ph-ring"><i class="fa fa-image"></i></div>
+      <div class="sc-ph-label">Add Mobiles image here</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SHOWCASE 02: CASES (flipped) ══════════ -->
+<section class="showcase flip" id="cases">
+  <div class="sc-info">
+    <span class="sc-ghost-num">02</span>
+    <div class="sc-cat">Category 02</div>
+    <h2 class="sc-name">Phone Cases<br>&amp; Covers</h2>
+    <p class="sc-sub">Military-grade armour, crystal-clear slims, designer prints and leather folios — <strong>every style, every model</strong>. Because great phones deserve great protection.</p>
+    <div class="sc-tags">
+      <span class="sc-tag">All iPhones</span>
+      <span class="sc-tag">Samsung</span>
+      <span class="sc-tag">Rugged</span>
+      <span class="sc-tag">Clear Slim</span>
+      <span class="sc-tag">Designer Prints</span>
+    </div>
+  </div>
+  <div class="sc-stage">
+    <div class="sc-orb"></div>
+    <!--
+      ADD YOUR CASES SHOWCASE IMAGE HERE:
+      src="your-image-path.jpg"
+      Animates with a gentle rock/tilt effect.
+    -->
+    <img
+      class="sc-product-img"
+      src="cover.jpg"
+      alt="Phone Cases & Covers at Mobyara"
+      id="casesImg"
+    />
+    <div class="sc-placeholder" id="casesPh">
+      <div class="sc-ph-ring"><i class="fa fa-image"></i></div>
+      <div class="sc-ph-label">Add Cases image here</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SHOWCASE 03: ACCESSORIES ══════════ -->
+<section class="showcase" id="accessories">
+  <div class="sc-info">
+    <span class="sc-ghost-num">03</span>
+    <div class="sc-cat">Category 03</div>
+    <h2 class="sc-name">Accessories<br>&amp; Gadgets</h2>
+    <p class="sc-sub">65W GaN chargers, 20000mAh power banks, Bluetooth speakers, screen guards and more — <strong>everything your device needs</strong> to perform at its best, every day.</p>
+    <div class="sc-tags">
+      <span class="sc-tag">Fast Chargers</span>
+      <span class="sc-tag">Power Banks</span>
+      <span class="sc-tag">BT Speakers</span>
+      <span class="sc-tag">Screen Guards</span>
+      <span class="sc-tag">Cables & Hubs</span>
+    </div>
+  </div>
+  <div class="sc-stage">
+    <div class="sc-orb"></div>
+    <!--
+      ADD YOUR ACCESSORIES SHOWCASE IMAGE HERE:
+      src="your-image-path.jpg"
+      Animates with a pulse/breathe effect.
+    -->
+    <img
+      class="sc-product-img"
+      src="watch.png"
+      alt="Accessories & Gadgets at Mobyara"
+      id="accessoriesImg"
+      style="height: 400px; width: 400px;"
+    />
+    <div class="sc-placeholder" id="accessoriesPh">
+      <div class="sc-ph-ring"><i class="fa fa-image"></i></div>
+      <div class="sc-ph-label">Add Accessories image here</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SHOWCASE 04: EARPHONES (flipped) ══════════ -->
+<section class="showcase flip" id="earphones">
+  <div class="sc-info">
+    <span class="sc-ghost-num">04</span>
+    <div class="sc-cat">Category 04</div>
+    <h2 class="sc-name">Earphones<br>&amp; Buds</h2>
+    <p class="sc-sub">From deep bass wired earphones to <strong>active noise-cancelling TWS buds</strong> — every listening experience, elevated. We carry the brands your ears have been waiting for.</p>
+    <div class="sc-tags">
+      <span class="sc-tag">Wired</span>
+      <span class="sc-tag">Wireless TWS</span>
+      <span class="sc-tag">Noise Cancelling</span>
+      <span class="sc-tag">Over-Ear</span>
+      <span class="sc-tag">Sports Fit</span>
+    </div>
+  </div>
+  <div class="sc-stage">
+    <div class="sc-orb"></div>
+    <!--
+      ADD YOUR EARPHONES SHOWCASE IMAGE HERE:
+      src="your-image-path.jpg"
+      Animates with a side-drift effect.
+    -->
+    <img
+      class="sc-product-img"
+      src="airpods.png"
+      alt="Earphones & Buds at Mobyara"
+      id="earphonesImg"
+    />
+    <div class="sc-placeholder" id="earphonesPh">
+      <div class="sc-ph-ring"><i class="fa fa-image"></i></div>
+      <div class="sc-ph-label">Add Earphones image here</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WHY US ══════════ -->
+<div class="why-wrap">
+  <p class="sec-label">The Mobyara Way</p>
+  <h2 class="sec-title">What Makes Us Your Best Choice</h2>
+  <div class="why-grid">
+    <div class="why-card"><span class="wi"><i class="fa-solid fa-check"></i></span><div class="wt">100% Genuine</div><div class="wd">Every product we sell is authentic. We partner directly with trusted distributors — zero fakes, zero risk.</div></div>
+    <div class="why-card"><span class="wi"><i class="fa-solid fa-dollar-sign"></i></span><div class="wt">Best Local Price</div><div class="wd">We match — and often beat — online prices. No hidden charges, no shipping delays. Just honest value.</div></div>
+    <div class="why-card"><span class="wi"><i class="fa-solid fa-screwdriver-wrench"></i></span><div class="wt">Expert Advice</div><div class="wd">Not sure what to buy? Our in-store team knows tech inside out. We find the right fit for your budget.</div></div>
+    <div class="why-card"><span class="wi"><i class="fa-solid fa-retweet"></i></span><div class="wt">Easy Exchange</div><div class="wd">Defective item? We sort it fast. Hassle-free exchange policy because your trust matters above everything.</div></div>
+  </div>
+</div>
+
+<!-- ══════════ PROMO ══════════ -->
+<div class="promo-wrap">
+  <div class="promo">
+    <div>
+      <p class="sec-label">Retail Exclusive</p>
+      <h2>Walk In. Save Big.<br><span>Only at Mobyara.</span></h2>
+      <p>Visit our store and discover exclusive in-store experiences on top electronics. No app needed. No delivery wait. Just great tech, right now.</p>
+    </div>
+    <div class="p-actions">
+      <button class="p-btn" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})"><i class="fa fa-map-marker" style="margin-right:8px"></i>Find Our Store</button>
+      <span class="p-note">Click any location above to open in Google Maps</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section id="about" style="background:var(--bg);">
+  <div style="padding:80px 80px;">
+    <p class="sec-label">Who We Are</p>
+    <h2 class="sec-title">The Story Behind MOBYARA</h2>
+    <div class="about-grid">
+      <!-- Left: story text -->
+      <div class="about-text">
+        <p>At <strong>Mobyara</strong>, we believe great technology should be accessible to everyone — not just those who shop online or live near a mall. We started as a single mobile accessories shop with a simple mission: bring <strong>genuine electronics</strong> to your doorstep at prices that make sense.</p>
+        <p>Today, Mobyara serves thousands of loyal customers every month. From the latest Samsung flagship to everyday earphones and phone cases — we stock it all, and we do it with expertise, honesty, and a real passion for tech.</p>
+        <p>We're not just a shop. We're your <strong>neighbourhood tech partner</strong> — the place you call when you need honest advice, a great deal, or just the right cable at the right time.</p>
+        <div class="about-tags">
+          <span class="a-tag"><i class="fa fa-check" style="margin-right:5px"></i>Since 2025</span>
+          <span class="a-tag"><i class="fa fa-users" style="margin-right:5px"></i>5000+ Customers</span>
+          <span class="a-tag"><i class="fa fa-map-marker" style="margin-right:5px"></i>4 Stores</span>
+          <span class="a-tag"><i class="fa fa-star" style="margin-right:5px"></i>4.8★ Rated</span>
+        </div>
+      </div>
+
+      <!-- Right: single store card with live Google Maps -->
+      <div>
+        <div class="stores-title" style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:18px;color:var(--text);">
+          <i class="fa fa-map-marker" style="color:var(--o);margin-right:8px"></i>Visit Our Store — Click to Open in Google Maps
+        </div>
+
+        <!--
+          STORE CARD — single clickable card that opens Google Maps
+          UPDATE: Replace the href with your actual Google Maps link
+          Example: href="https://maps.google.com/?q=Your+Shop+Address,+City"
+          Or use a Google Maps Place link: href="https://goo.gl/maps/YOURCODE"
+        -->
+        <a
+          class="store-main-card"
+          href="https://www.google.com/maps/dir//SPRINGLINK,+6,+Chittaranjan+Ave,+Esplanade,+Chandni+Chawk,+East+Kolkata+Twp,+Kolkata,+West+Bengal+700072/@22.5718165,88.3281727,14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3a027752b47b23cf:0xd9f56fba96cdd263!2m2!1d88.355331!2d22.5668981?entry=ttu&g_ep=EgoyMDI2MDIyNS4wIKXMDSoASAFQAw%3D%3DTORE+ADDRESS+HERE"
+          target="_blank"
+          rel="noopener noreferrer"
+          id="storeCard"
+        >
+          <!-- Live embedded map — UPDATE the src with your Google Maps embed URL -->
+          <!-- Get it from: Google Maps → Share → Embed a map → Copy HTML → use the src URL -->
+          <div class="map-frame-wrap">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.012!2d72.8777!3d19.0760!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDA0JzMzLjYiTiA3MsKwNTInMzkuNyJF!5e0!3m2!1sen!2sin!4v1234567890"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mobyara Store Location"
+            ></iframe>
+            <div class="map-overlay">
+              <div class="map-overlay-btn"><i class="fa fa-external-link" style="margin-right:6px"></i>Open in Google Maps</div>
+            </div>
+          </div>
+
+          <div class="store-body">
+            <div class="store-body-top">
+              <div class="store-badge"><i class="fa fa-map-marker" style="color:#fff;font-size:18px"></i></div>
+              <div class="store-badge-info">
+                <!--  UPDATE: Your store name -->
+                <div class="store-name">MOBYARA — Main Store</div>
+                <div class="store-sub">Electronics & Mobile Accessories</div>
+              </div>
+            </div>
+            <div class="store-details">
+              <!-- UPDATE: Your address, hours, phone, city -->
+              <div class="sd-item"><i class="fa fa-map-marker"></i><span>No 19, Dc Block, Near Bidhan Nagar, Salt Lake City Sector 1, Kolkata-700064, West Bengal</span></div>
+              <div class="sd-item"><i class="fa fa-clock-o"></i><span>Mon – Sun<br>10:00 AM – 9:00 PM</span></div>
+              <div class="sd-item"><i class="fa fa-phone"></i><span>+91 9330933012</span></div>
+              <div class="sd-item"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp Us Anytime</span></div>
+            </div>
+            <div class="store-cta">
+              <i class="fa fa-external-link"></i>
+              Tap to Get Directions in Google Maps
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ══════════ CONNECT ══════════ -->
+<section id="connect" style="background:var(--bg2);">
+  <div style="padding:100px 80px;">
+    <p class="sec-label">Get In Touch</p>
+    <h2 class="sec-title">Connect With Mobyara</h2>
+    <div class="connect-grid">
+
+      <!-- Contact Info -->
+      <div class="ci-info">
+        <p>Have a question? Looking for a specific product? Want to know about our latest deals? Drop us your details and our team will reach out to you — fast.</p>
+        <p>Or simply walk into our store — we're always ready to help you find exactly what you need.</p>
+        <div class="ci-details">
+          <div class="cd"><i class="fa fa-phone"></i>+91 9330933012</div>
+          <div class="cd"><i class="fa-regular fa-envelope"></i>mobyara@gmail.com</div>
+          <div class="cd"><i class="fa-brands fa-whatsapp"></i>WhatsApp us anytime</div>
+          <div class="cd"><i class="fa fa-clock-o"></i>Mon–Sun · 10am to 9pm</div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="c-form">
+        <h3>Send Us a Message</h3>
+
+        <div class="f-row">
+          <div class="f-group">
+            <label>First Name</label>
+            <input type="text" id="fName" placeholder="Rahul">
+          </div>
+          <div class="f-group">
+            <label>Last Name</label>
+            <input type="text" id="lName" placeholder="Sharma">
+          </div>
+        </div>
+
+        <div class="f-group">
+          <label>Email Address</label>
+          <input type="email" id="fEmail" placeholder="mobyara@email.com">
+        </div>
+
+        <div class="f-group">
+          <label>Phone Number</label>
+          <input type="tel" id="fPhone" placeholder="+91 xxxxxxxx12">
+        </div>
+
+        <!-- Added Message Textarea -->
+        <div class="f-group">
+          <label>Your Message</label>
+          <textarea id="fMsgInput" placeholder="Type your message here"
+                    style="background:var(--bg); color:var(--text); border:1px solid #ccc; padding:10px; font-family:inherit; font-size:16px; border-radius:4px; width:100%; box-sizing:border-box;"></textarea>
+        </div>
+
+        <button class="f-submit" id="fSubmit" onclick="sendForm()">
+          <i class="fa fa-paper-plane" style="margin-right:8px"></i>Send Message
+        </button>
+
+        <div class="f-msg" id="fMsg"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="f-top">
+    <div>
+      <div class="f-brand-row">
+        <div>
+          <img src="mobyara-footer.png" alt="footer-logo">
+        </div>
+      </div>
+      <div class="f-btl">// Beyond The Limit</div>
+      <p class="f-desc">Your trusted retail destination for premium phone cases, earphones, mobiles and all things electronics. Real gear. Real prices.</p>
+    </div>
+    <div class="f-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#mobiles">Smartphones</a></li>
+        <li><a href="#cases">Phone Cases</a></li>
+        <li><a href="#accessories">Accessories</a></li>
+        <li><a href="#earphones">Earphones & Buds</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Store</h4>
+      <ul>
+        <li><a href="#about">Find Our Store</a></li>
+        <li><a href="#about">Store Hours</a></li>
+        <li><a href="#connect">Deals & Offers</a></li>
+        <li><a href="#connect">Exchange Policy</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#connect">Contact Us</a></li>
+       <li>
+          <a href="https://wa.me/?text=Hi%20Mobyara%2C%20I%20want%20to%20enquire%20about%20mobiles." target="_blank">
+            <i class="fa-brands fa-whatsapp" style="color:#25D366; margin-right:6px;"></i>
+            WhatsApp
+          </a>
+        </li>
+        <li>
+      <a href="tel:+919330933012">
+        <i class="fa-solid fa-phone" style="margin-right:6px; color: rgb(41, 75, 231)"></i> Call </a> </li>
+      </ul>
+    </div>
+  </div>
+  <div class="f-bottom">
+    <p>© 2026 Mobyara. All rights reserved.</p>
+    <span class="f-sig">// Beyond The Limit</span>
+    <p>Built for tech lovers.</p>
+  </div>
+</footer>
+
+
+<!-- Floating WhatsApp Button -->
+<a href="#" id="whatsappBtn" target="_blank" aria-label="Chat on WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- ══════════ SCRIPTS ══════════ -->
+<script>/* 1 — LocalStorage theme */
+(function(){
+  var t = localStorage.getItem('mobyara-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var h = document.documentElement;
+  var n = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  h.setAttribute('data-theme', n);
+  localStorage.setItem('mobyara-theme', n);
+});
+
+/* 2 — Hamburger */
+var hbg = document.getElementById('hbg');
+var mob = document.getElementById('mobMenu');
+hbg.addEventListener('click', function(){
+  hbg.classList.toggle('open');
+  mob.classList.toggle('open');
+});
+mob.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click', function(){ hbg.classList.remove('open'); mob.classList.remove('open'); });
+});
+
+/* 3 — Auto-hide placeholders when images have real src */
+(function(){
+  var pairs = [
+    { img: 'heroProductImg',  ph: 'heroPlaceholder'    },
+    { img: 'mobilesImg',      ph: 'mobilesPh'          },
+    { img: 'casesImg',        ph: 'casesPh'            },
+    { img: 'accessoriesImg',  ph: 'accessoriesPh'      },
+    { img: 'earphonesImg',    ph: 'earphonesPh'        },
+  ];
+  pairs.forEach(function(p){
+    var imgEl = document.getElementById(p.img);
+    var phEl  = document.getElementById(p.ph);
+    if(!imgEl || !phEl) return;
+    // If src is non-empty, hide placeholder
+    function check(){
+      if(imgEl.src && imgEl.src !== window.location.href && imgEl.src !== ''){
+        phEl.classList.add('hidden');
+      } else {
+        phEl.classList.remove('hidden');
+      }
+    }
+    check();
+    imgEl.addEventListener('load', check);
+  });
+})();
+
+/* 4 — Scroll reveal for showcase sections */
+var showcases = document.querySelectorAll('.showcase');
+var revealObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('revealed'); });
+}, { threshold: 0.1 });
+showcases.forEach(function(s){ revealObs.observe(s); });
+
+/* 5 — Smooth hash scroll */
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    var t = document.querySelector(this.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+/* 6 — Google Sheets form
+   SETUP INSTRUCTIONS:
+   a) Open Google Sheets → Extensions → Apps Script
+   b) Paste and deploy:
+
+      function doPost(e) {
+        SpreadsheetApp.getActiveSpreadsheet()
+          .getActiveSheet()
+          .appendRow([ new Date(),
+            e.parameter.firstName, e.parameter.lastName,
+            e.parameter.email,     e.parameter.phone ]);
+        return ContentService.createTextOutput('OK');
+      }
+
+   c) Deploy as Web App (Execute as: Me, Who has access: Anyone)
+   d) Replace YOUR_GOOGLE_SCRIPT_URL below with the web app URL
+*/
+var GSHEET = 'YOUR_GOOGLE_SCRIPT_URL'; // Replace with your deployed Apps Script URL
+var WHATSAPP_NUMBER = '919330933012'; // Your WhatsApp number (no + or spaces)
+
+function sendForm(){
+  var fn  = document.getElementById('fName').value.trim();
+  var ln  = document.getElementById('lName').value.trim();
+  var em  = document.getElementById('fEmail').value.trim();
+  var ph  = document.getElementById('fPhone').value.trim();
+  var userMsg = document.getElementById('fMsgInput').value.trim();
+  var msg = document.getElementById('fMsg');
+  var btn = document.getElementById('fSubmit');
+
+  msg.className = 'f-msg';
+  if(!fn||!ln||!em||!ph){ 
+    msg.className='f-msg err'; 
+    msg.textContent='⚠️ Please fill in all fields.'; 
+    return; 
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ 
+    msg.className='f-msg err'; 
+    msg.textContent='⚠️ Please enter a valid email address.'; 
+    return; 
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-right:8px"></i>Sending...';
+
+  // --- Send to Google Sheets ---
+  var fd = new FormData();
+  fd.append('firstName', fn);
+  fd.append('lastName', ln);
+  fd.append('email', em);
+  fd.append('phone', ph);
+  fd.append('message', userMsg);
+
+  fetch(GSHEET, { method: 'POST', body: fd })
+    .then(function(){ done(); }).catch(function(){ done(); })
+    .finally(function(){
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa fa-paper-plane" style="margin-right:8px"></i>Send Message';
+    });
+
+  // --- Open WhatsApp with pre-filled message ---
+  if(userMsg){
+    var waText = encodeURIComponent(`Hi Mobyara, I am ${fn} ${ln}. ${userMsg}`);
+    var waURL = `https://wa.me/919330933012?text=${waText}`;
+    window.open(waURL, '_blank');
+  }
+
+  function done(){
+    msg.className = 'f-msg ok';
+    msg.textContent = "✅ Message sent! We'll be in touch soon.";
+    ['fName','lName','fEmail','fPhone','fMsgInput'].forEach(function(id){ 
+      document.getElementById(id).value = ''; 
+    });
+  }
+}
+
+
+var WHATSAPP_NUMBER = '919330933012'; // Replace with your number
+var btn = document.getElementById('whatsappBtn');
+
+// Slide-up animation after page loads
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    btn.classList.add('show');
+  }, 300); // Delay slightly for smooth effect
+});
+
+// WhatsApp click behavior
+btn.addEventListener('click', function(e){
+  e.preventDefault();
+  var defaultMsg = encodeURIComponent("Hi Mobyara, I would like to know more about your products.");
+  var waURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${defaultMsg}`;
+  window.open(waURL, '_blank');
+});
+</script>
+</body>
+</html>
